@@ -104,14 +104,18 @@ class UserDashboard extends React.Component<{}, { message: any; }>{
     };
     render() {
         return (
-            <div>
-                <h1 className="my-4">Welcome back!</h1>
-                <LogoutButton onClick={this.destroySesion} />
-                <AddUserButton />
-                <EditProfileButton />
-                <DeleteButton onClick={this.handleSubmit} />
-                <UserListButton />
-            </div>
+            <Container fluid>
+                <Row>
+                    <Col>
+                        <h1 className="my-4">Welcome back!</h1>
+                        <LogoutButton onClick={this.destroySesion} />
+                        <AddUserButton />
+                        <EditProfileButton />
+                        <DeleteButton onClick={this.handleSubmit} />
+                        <UserListButton />
+                    </Col>
+                </Row>
+            </Container>
         );
     }
 }
@@ -126,9 +130,7 @@ class App extends React.Component<{}, {}> {
     }
     render() {
         return (
-            <div>
-                <UserDashboard />
-            </div>
+            <UserDashboard />
         );
     }
 }

@@ -78,35 +78,33 @@ class App extends Component<{}, LoginState> {
             messcolor = 'red'
         }
         return (
-            <div className="mt-5">
-                <Container>
-                    <Row className="justify-content-md-center pt-5">
-                        <Col md="auto">
-                            <p className="text-center">Login to access your account</p>
-                            <strong><p className="text-center" style={{ color: messcolor}}>
-                                {message}
-                            </p></strong>
-                            <Form onSubmit={this.handleSubmit}>
-                                <Form.Group controlId="formBasicEmail">
-                                    <Form.Label>Email address</Form.Label>
-                                    <Form.Control name="email" type="email" placeholder="Enter email" value={this.state.email} onChange={this.handleInputChange} />
-                                    <Form.Text className="text-muted">
-                                        We'll never share your email with anyone else.
+            <Container className="mt-5">
+                <Row className="justify-content-md-center pt-5">
+                    <Col md="auto">
+                        <p className="text-center">Login to access your account</p>
+                        <strong><p className="text-center" style={{ color: messcolor }}>
+                            {message}
+                        </p></strong>
+                        <Form onSubmit={this.handleSubmit}>
+                            <Form.Group controlId="formBasicEmail">
+                                <Form.Label>Email address</Form.Label>
+                                <Form.Control name="email" type="email" placeholder="Enter email" value={this.state.email} onChange={this.handleInputChange} />
+                                <Form.Text className="text-muted">
+                                    We'll never share your email with anyone else.
                             </Form.Text>
-                                </Form.Group>
-                                <Form.Group controlId="formBasicPassword">
-                                    <Form.Label>Password</Form.Label>
-                                    <Form.Control name="password" value={this.state.password} onChange={this.handleInputChange} type="password" placeholder="Password" />
-                                </Form.Group>
-                                <Button className="btn btn-block mt-2" variant="primary" type="submit">
-                                    Login
+                            </Form.Group>
+                            <Form.Group controlId="formBasicPassword">
+                                <Form.Label>Password</Form.Label>
+                                <Form.Control name="password" value={this.state.password} onChange={this.handleInputChange} type="password" placeholder="Password" />
+                            </Form.Group>
+                            <Button className="btn btn-block mt-2" variant="primary" type="submit">
+                                Login
                                     </Button>
-                            </Form>
-                            <p className="mt-2 text-center">Don't have an account?<Link to="/signup"> Sign Up</Link></p>
-                        </Col>
-                    </Row>
-                </Container>
-            </div >
+                        </Form>
+                        <p className="mt-2 text-center">Don't have an account?<Link to="/signup"> Sign Up</Link></p>
+                    </Col>
+                </Row>
+            </Container>
         );
     }
     ;
