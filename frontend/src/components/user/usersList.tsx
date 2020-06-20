@@ -83,20 +83,26 @@ class App extends Component<{}, ListState> {
             accessor: 'date_created'
         }];
         return (
-            <div className="text-center mt-5">
-                <div className="mb-5">
-                    <h1 className="my-4">Welcome back!</h1>
-                    <LogoutButton onClick={this.destroySesion} />
-                    <HomeButton/>
-                    <EditProfileButton />
-                </div>
-                <ReactTable
-                    data={users}
-                    columns={columns}
-                    defaultPageSize={5}
-                    pageSizeOptions={[5, 10, 15]}
-                ></ReactTable>
-            </div >
+            <Container fluid>
+                <Row className="mb-5">
+                    <Col>
+                        <h1 className="my-4">Welcome back!</h1>
+                        <LogoutButton onClick={this.destroySesion} />
+                        <HomeButton />
+                        <EditProfileButton />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <ReactTable
+                            data={users}
+                            columns={columns}
+                            defaultPageSize={5}
+                            pageSizeOptions={[5, 10, 15]}
+                        ></ReactTable>
+                    </Col>
+                </Row>
+            </Container>
         );
     }
     ;
