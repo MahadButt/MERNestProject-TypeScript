@@ -3,6 +3,7 @@ import { Button, Alert, Container, Row, Col, Form } from 'react-bootstrap';
 import Api from '../API';
 import { Link } from 'react-router-dom'
 import { EditFormState } from './interfaces/interfaces'
+import { nextTick } from 'process';
 function LogoutButton(props: { onClick: any }) {
     return (
         <Button onClick={props.onClick}>
@@ -95,32 +96,32 @@ class EditFormComp extends React.Component<{ user: any }, EditFormState>{
             messcolor = 'red'
         }
         return (
-                <Row className="justify-content-md-center mt-5">
-                    <Col md="auto">
-                        <h3 className='text-center mb-3'>Update Profile</h3>
-                        <strong><p className='text-center' style={{ color: messcolor }} >
-                            {message}
-                        </p></strong>
-                        <Form onSubmit={this.handleSubmit}>
-                            <Form.Group>
-                                <Form.Label>Firstname</Form.Label>
-                                <Form.Control name="firstname" type="text" placeholder="Enter firstname" value={this.state.firstname} onChange={this.handleInputChange} />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Lastname</Form.Label>
-                                <Form.Control name="lastname" type="text" placeholder="Enter lastname" value={this.state.lastname} onChange={this.handleInputChange} />
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Email address</Form.Label>
-                                <Form.Control name="email" type="email" placeholder="Enter email" value={this.state.email} onChange={this.handleInputChange} />
-                                <Form.Text className="text-muted">
-                                    We'll never share your email with anyone else.
+            <Row className="justify-content-md-center mt-5">
+                <Col md="auto">
+                    <h3 className='text-center mb-3'>Update Profile</h3>
+                    <strong><p className='text-center' style={{ color: messcolor }} >
+                        {message}
+                    </p></strong>
+                    <Form onSubmit={this.handleSubmit}>
+                        <Form.Group>
+                            <Form.Label>Firstname</Form.Label>
+                            <Form.Control name="firstname" type="text" placeholder="Enter firstname" value={this.state.firstname} onChange={this.handleInputChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Lastname</Form.Label>
+                            <Form.Control name="lastname" type="text" placeholder="Enter lastname" value={this.state.lastname} onChange={this.handleInputChange} />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Email address</Form.Label>
+                            <Form.Control name="email" type="email" placeholder="Enter email" value={this.state.email} onChange={this.handleInputChange} />
+                            <Form.Text className="text-muted">
+                                We'll never share your email with anyone else.
                             </Form.Text>
-                            </Form.Group>
-                            <Button className="btn btn-block mt-2" variant="primary" type="submit">Update</Button>
-                        </Form>
-                    </Col>
-                </Row>
+                        </Form.Group>
+                        <Button className="btn btn-block mt-2" variant="primary" type="submit">Update</Button>
+                    </Form>
+                </Col>
+            </Row>
         );
     }
     ;
@@ -132,8 +133,8 @@ class App extends React.Component<{}, {}> {
         this.state = {};
     }
     componentDidMount() {
-        if (sessionStorage.length <= 0) {
-            window.location.href = '/login'
+        if (!sessionStorage.token) {
+            this.destroySesion();
         }
     }
     destroySesion = () => {

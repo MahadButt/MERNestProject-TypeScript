@@ -77,6 +77,11 @@ class UserDashboard extends React.Component<{}, { message: any; }>{
         this.handleSubmit = this.handleSubmit.bind(this);
 
     }
+    componentDidMount() {
+        if (!sessionStorage.token) {
+            this.destroySesion();
+        }
+    }
     destroySesion = () => {
         sessionStorage.clear();
         window.location.href = "/login";
@@ -122,11 +127,6 @@ class UserDashboard extends React.Component<{}, { message: any; }>{
 class App extends React.Component<{}, {}> {
     constructor(props: any) {
         super(props);
-    }
-    componentDidMount() {
-        if (sessionStorage.length <= 0) {
-            window.location.href = '/login'
-        }
     }
     render() {
         return (

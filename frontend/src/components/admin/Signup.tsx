@@ -82,29 +82,37 @@ class App extends Component<{}, SignUpState> {
         }
         return (
             <Container className="mt-5">
-                <Row className="justify-content-md-center pt-5">
-                    <Col md="auto">
+                <Row className="justify-content-md-center p-5">
+                    <Col className="p-5" lg='auto'>
                         <h3 className="text-center">Signup</h3>
                         <strong><p className="text-center" style={{ color: messcolor }}>
                             {message}
                         </p></strong>
                         <Form onSubmit={this.handleSubmit}>
-                            <Form.Group as={Row}>
-                                <Col md={6}>
-                                    <Form.Control name="firstname" type="text" placeholder="Enter FirstName" value={this.state.firstname} onChange={this.handleInputChange} />
+                            <Row>
+                                <Col md='6'>
+                                    <Form.Group>
+                                        <Form.Control name="firstname" type="text" placeholder="Enter FirstName" value={this.state.firstname} onChange={this.handleInputChange} />
+                                    </Form.Group>
                                 </Col>
-                                <Col md={6}>
-                                    <Form.Control name="lastname" type="text" placeholder="Enter LastName" value={this.state.lastname} onChange={this.handleInputChange} />
+                                <Col md='6'>
+                                    <Form.Group>
+                                        <Form.Control name="lastname" type="text" placeholder="Enter LastName" value={this.state.lastname} onChange={this.handleInputChange} />
+                                    </Form.Group>
                                 </Col>
-                            </Form.Group>
-                            <Form.Group as={Row}>
-                                <Col md={6}>
-                                    <Form.Control name="email" type="email" placeholder="Enter email" value={this.state.email} onChange={this.handleInputChange} />
+                            </Row>
+                            <Row>
+                                <Col md='6'>
+                                    <Form.Group>
+                                        <Form.Control name="email" type="email" placeholder="Enter email" value={this.state.email} onChange={this.handleInputChange} />
+                                    </Form.Group>
                                 </Col>
-                                <Col md={6}>
-                                    <Form.Control name="password" type="password" placeholder="Enter Password" value={this.state.password} onChange={this.handleInputChange} />
+                                <Col md='6'>
+                                    <Form.Group>
+                                        <Form.Control name="password" type="password" placeholder="Enter Password" value={this.state.password} onChange={this.handleInputChange} />
+                                    </Form.Group>
                                 </Col>
-                            </Form.Group>
+                            </Row>
                             <Button className="btn btn-block mt-2 text-center" variant="primary" type="submit">
                                 Signup
                                 </Button>
