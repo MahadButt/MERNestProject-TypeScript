@@ -43,18 +43,7 @@ export const loginAdmin = (email: any, password: any) => {
             .then((response) => {
                 if (response.data.success) {
                     let token = response.data.successResponse.accessToken;
-                    let id = response.data.successResponse.id;
-                    let email = response.data.successResponse.email;
-                    let firstname = response.data.successResponse.firstname;
-                    let lastname = response.data.successResponse.lastname;
-                    let user = {
-                        id: id,
-                        email: email,
-                        firstname: firstname,
-                        lastname: lastname
-                    }
                     sessionStorage.setItem('token', token)
-                    sessionStorage.setItem('user', JSON.stringify(user))
                     window.location.href = "/";
                 }
             }).catch(err => {
