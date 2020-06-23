@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import jwt from 'jsonwebtoken'
+import { config } from '../../config/secret'
 import { logoutAdmin, deleteAdmin } from '../../redux'
 
 function LogoutButton(props: any) {
@@ -70,6 +72,15 @@ function UserListButton() {
     );
 }
 function App(props: any) {
+    if (sessionStorage.token) {
+        jwt.verify(sessionStorage.token, config.secret_key, function (err: any, decoded: any) {
+            if (err) {
+                props.logoutAdmin();
+            }
+        });
+    }else{
+        props.logoutAdmin();
+    }
     return (
         <Container fluid>
             <Row>

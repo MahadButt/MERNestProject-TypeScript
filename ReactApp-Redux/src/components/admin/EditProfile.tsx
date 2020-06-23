@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { editAdmin, logoutAdmin } from '../../redux'
 import jwt from 'jsonwebtoken'
+import { config } from '../../config/secret'
 
 function LogoutButton(props: { onClick: any }) {
     return (
@@ -31,8 +32,18 @@ function HomeButton() {
     );
 }
 function App(props: any) {
-    let token: any = sessionStorage.getItem('token');
-    const data: any = jwt.decode(token)
+    let data: any = "";
+    if (sessionStorage.token) {
+        jwt.verify(sessionStorage.token, config.secret_key, function (err: any, decoded: any) {
+            if (err) {
+                props.logoutAdmin();
+            } else {
+                data = decoded
+            }
+        });
+    } else {
+        props.logoutAdmin();
+    }
     const [firstname, setfirstname] = useState(data.admin.firstname);
     const [lastname, setlastname] = useState(data.admin.lastname);
     const [email, setemail] = useState(data.admin.email);
@@ -87,9 +98,9 @@ function App(props: any) {
 }
 const mapStateToProps = (state: any) => {
     return {
-        firsname:state.admin.firstname,
+        firsname: state.admin.firstname,
         lastname: state.admin.lastname,
-        email:state.admin.email,
+        email: state.admin.email,
         message: state.admin.message,
         isEdited: state.admin.isEdited
     }

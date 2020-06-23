@@ -3,6 +3,9 @@ import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { signUpAdmin } from '../../redux'
+import jwt from 'jsonwebtoken'
+import { config } from '../../config/secret'
+
 function App(props: any) {
     const [firstname, setfirstname] = useState("");
     const [lastname, setlastname] = useState("");

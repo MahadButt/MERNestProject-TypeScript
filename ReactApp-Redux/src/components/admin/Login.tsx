@@ -3,6 +3,9 @@ import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { loginAdmin } from '../../redux'
+import jwt from 'jsonwebtoken'
+import { config } from '../../config/secret'
+
 function App(props: any) {
     const [email, setemail] = useState("");
     const [password, setpassword] = useState("");
@@ -19,9 +22,9 @@ function App(props: any) {
                 <Col md="auto">
                     <p className="text-center">Login to access your account</p>
                     <Form>
-                    <strong><p className="text-center" style={{ color: messcolor }}>
-                        {msg}
-                    </p></strong>
+                        <strong><p className="text-center" style={{ color: messcolor }}>
+                            {msg}
+                        </p></strong>
                         <Form.Group controlId="formBasicEmail">
                             <Form.Label>Email address</Form.Label>
                             <Form.Control name="email" type="email" placeholder="Enter email" value={email} onChange={(e: any) => setemail(e.target.value)} />
