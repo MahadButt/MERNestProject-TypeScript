@@ -10,7 +10,7 @@ const initialState: any = {
     isEdited:""
 }
 
-const adminuserReducer = (state = initialState, action: any) => {
+const adminReducer = (state = initialState, action: any) => {
     switch (action.type) {
         case SIGNUP_ADMIN: return {
             ...state,
@@ -34,4 +34,4 @@ const adminuserReducer = (state = initialState, action: any) => {
         default: return state;
     }
 }
-export default adminuserReducer;
+export default adminReducer;
