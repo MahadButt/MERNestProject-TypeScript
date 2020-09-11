@@ -1,41 +1,43 @@
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne,JoinColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { Contains, IsInt, Length, IsEmail, IsFQDN, IsDate, Min, Max, IsNotEmpty } from "class-validator";
+import { Admins } from 'src/admins/admins.entity';
 
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
-    id: number;
-
+    id!: number;
+ 
     @Column()
-    userName: string;
+    userName!: string;
 
     @Column()
     @IsNotEmpty()
-    firstName: string;
+    firstName!: string;
 
     @Column()
-    lastName: string;
+    lastName!: string;
 
     @Column()
     @IsEmail()
-    email: string;
+    email!: string;
 
     @Column()
     @IsNotEmpty()
     // @Length(1)
-    password: string;
+    password!: string;
 
     @Column()
     @CreateDateColumn()
-    date_created: Date;
+    date_created!: Date;
 
     @Column()
     @UpdateDateColumn()
-    date_modified: Date;
-    
-    @Column()
-    AdminId: number;
+    date_modified!: Date;
+
+    @ManyToOne(() => Admins, admin => admin.user)
+    @JoinColumn({ name: "AdminId" })
+    AdminId!: Admins;
     ///
-    
+
     decoded: any;
 }
