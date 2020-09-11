@@ -11,20 +11,23 @@ import editProfile from './components/admin/EditProfile'
 import AddUser from './components/user/addUser'
 import * as serviceWorker from './serviceWorker';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
+import { Provider } from 'react-redux'
+import store from './redux/store'
 const Notfound = () => <h1>Not found</h1>;
 const routing = (
-    <Router>
-        <Switch>
-            <Route exact path="/" component={dashboard} />
-            <Route exact path="/users" component={userlist} />
-            <Route exact path="/edit" component={editProfile} />
-            <Route exact path="/addUser" component={AddUser} />
-            <Route exact path="/signup" component={Signup} />
-            <Route exact path="/login" component={Login} />
-            <Route component={Notfound} />
-        </Switch>
-    </Router>
+    < Provider store={store} >
+        <Router>
+            <Switch>
+                <Route exact path="/" component={dashboard} />
+                <Route exact path="/users" component={userlist} />
+                <Route exact path="/edit" component={editProfile} />
+                <Route exact path="/addUser" component={AddUser} />
+                <Route exact path="/signup" component={Signup} />
+                <Route exact path="/login" component={Login} />
+                <Route component={Notfound} />
+            </Switch>
+        </Router>
+    </Provider >
 );
 
 ReactDOM.render(

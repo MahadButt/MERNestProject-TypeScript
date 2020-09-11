@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { Button, Alert, Container, Row, Col } from 'react-bootstrap';
-import Api from '../API';
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+import jwt from 'jsonwebtoken'
+import { config } from '../../config/secret'
+import { logoutAdmin, deleteAdmin } from '../../redux'
 
-function LogoutButton(props: { onClick: any }) {
+function LogoutButton(props: any) {
     return (
         <Button onClick={props.onClick}>
             Logout
@@ -19,9 +22,9 @@ function EditProfileButton() {
         </Link>
     );
 }
-function DeleteButton(props: { onClick: any }) {
+function DeleteButton(props: any) {
     return (
-        <Button onClick={props.onClick} style={{ marginLeft: '10px' }}>
+        <Button style={{ marginLeft: '10px' }} onClick={props.onClick}>
             Delete Account
         </Button>
     );
@@ -68,71 +71,47 @@ function UserListButton() {
         </Link>
     );
 }
-class UserDashboard extends React.Component<{}, { message: any; }>{
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            message: ""
-        }
-        this.handleSubmit = this.handleSubmit.bind(this);
-
+function App(props: any) {
+    if (sessionStorage.token) {
+        jwt.verify(sessionStorage.token, config.secret_key, function (err: any, decoded: any) {
+            if (err) {
+                props.logoutAdmin();
+            }
+        });
+    }else{
+        props.logoutAdmin();
     }
-    componentDidMount() {
-        if (!sessionStorage.token) {
-            this.destroySesion();
-        }
-    }
-    destroySesion = () => {
-        sessionStorage.clear();
-        window.location.href = "/login";
-    }
-    handleSubmit = (event: any) => {
-        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-        Api.delete(`/admin/${user.id}/delete`, {
-            headers: { 'authorization': sessionStorage.getItem('token') }
-        })
-            .then((response) => {
-                if (response.data.success === true) {
-                    this.destroySesion();
-                    window.location.href = "/login";
-                }
-            }).catch(err => {
-                let error: any = err.response.data.message;
-                if (err.response) {
-                    this.setState({
-                        message: error
-                    }, function () {
-                        console.log(err.response);
-                    });
-                }
-            });
-    };
-    render() {
-        return (
-            <Container fluid>
-                <Row>
-                    <Col>
-                        <h1 className="my-4">Welcome back!</h1>
-                        <LogoutButton onClick={this.destroySesion} />
-                        <AddUserButton />
-                        <EditProfileButton />
-                        <DeleteButton onClick={this.handleSubmit} />
-                        <UserListButton />
-                    </Col>
-                </Row>
-            </Container>
-        );
+    return (
+        <Container fluid>
+            <Row>
+                <Col>
+                    <h1 className="my-4">Welcome back!</h1>
+                    <LogoutButton onClick={() => props.logoutAdmin()} />
+                    <AddUserButton />
+                    <EditProfileButton />
+                    <DeleteButton onClick={() => props.deleteAdmin()} />
+                    <UserListButton />
+                </Col>
+            </Row>
+        </Container>
+    )
+}
+const mapStateToProps = (state: any) => {
+    return {
+        email: state.admin.email,
+        password: state.admin.password,
+        message: state.admin.message,
+        isLoggedIn: state.admin.isLoggedIn
     }
 }
-class App extends React.Component<{}, {}> {
-    constructor(props: any) {
-        super(props);
-    }
-    render() {
-        return (
-            <UserDashboard />
-        );
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        logoutAdmin: function () {
+            dispatch(logoutAdmin());
+        },
+        deleteAdmin: function () {
+            dispatch(deleteAdmin());
+        }
     }
 }
-
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

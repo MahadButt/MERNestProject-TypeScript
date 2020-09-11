@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Button, Alert, Container, Row, Col } from 'react-bootstrap';
-import Api from '../API';
 import ReactTable from 'react-table-6'
 import { Link } from 'react-router-dom'
 import 'react-table-6/react-table.css'
-import { ListState } from './interfaces/interfaces'
+import { connect } from 'react-redux'
+import jwt from 'jsonwebtoken'
+import { config } from '../../config/secret'
+import { logoutUser,userdata } from '../../redux'
 
 function LogoutButton(props: { onClick: any }) {
     return (
@@ -31,81 +33,70 @@ function EditProfileButton() {
         </Link>
     );
 }
-class App extends Component<{}, ListState> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            users: []
-        };
+function App(props: any) {
+    if (sessionStorage.token) {
+        jwt.verify(sessionStorage.token, config.secret_key, function (err: any, decoded: any) {
+            if (err) {
+                props.logoutUser();
+            } else {
+                props.userdata();
+            }
+        });
+    } else {
+        props.logoutUser();
     }
-    componentWillMount() {
-        if (sessionStorage.length <= 0) {
-            window.location.href = '/login'
+    const columns = [{
+        Header: 'Id',
+        accessor: 'id'
+    }, {
+        Header: 'User Name',
+        accessor: 'userName'
+    }, {
+        Header: 'Email',
+        accessor: 'email'
+    }, {
+        Header: 'Password',
+        accessor: 'password'
+    }, {
+        Header: 'CreatedDate',
+        accessor: 'date_created'
+    }];
+    return (
+        <Container fluid>
+            <Row className="mb-5">
+                <Col>
+                    <h1 className="my-4">Welcome back!</h1>
+                    <LogoutButton onClick={() => props.logoutUser()} />
+                    <HomeButton />
+                    <EditProfileButton />
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <ReactTable
+                        data={props.users}
+                        columns={columns}
+                        defaultPageSize={5}
+                        pageSizeOptions={[5, 10, 15]}
+                    ></ReactTable>
+                </Col>
+            </Row>
+        </Container>
+    );
+}
+const mapStateToProps = (state: any) => {
+    return {
+        users: state.user.users
+    }
+}
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        userdata: function () {
+            dispatch(userdata())
+        },
+        logoutUser: function () {
+            dispatch(logoutUser());
         }
     }
-    destroySesion = () => {
-        sessionStorage.clear();
-        window.location.href = "/login";
-    }
-    componentDidMount() {
-        const user = JSON.parse(sessionStorage.getItem('user') || '{}');
-        Api.get('/users/userlist', {
-            headers: { 'authorization': sessionStorage.getItem('token') }
-        })
-            .then((response) => {
-                if (response.data.success) {
-                    this.setState({
-                        users: response.data.successResponse
-                    });
-                }
-            }).catch(err => {
-                if (err.response) {
-                    console.log(err.response);
-                }
-            });
-    };
-    render() {
-        const { users } = this.state;
-        const columns = [{
-            Header: 'Id',
-            accessor: 'id'
-        }, {
-            Header: 'User Name',
-            accessor: 'userName'
-        }, {
-            Header: 'Email',
-            accessor: 'email'
-        }, {
-            Header: 'Password',
-            accessor: 'password'
-        }, {
-            Header: 'CreatedDate',
-            accessor: 'date_created'
-        }];
-        return (
-            <Container fluid>
-                <Row className="mb-5">
-                    <Col>
-                        <h1 className="my-4">Welcome back!</h1>
-                        <LogoutButton onClick={this.destroySesion} />
-                        <HomeButton />
-                        <EditProfileButton />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <ReactTable
-                            data={users}
-                            columns={columns}
-                            defaultPageSize={5}
-                            pageSizeOptions={[5, 10, 15]}
-                        ></ReactTable>
-                    </Col>
-                </Row>
-            </Container>
-        );
-    }
-    ;
 }
-;
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
